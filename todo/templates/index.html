@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-10 mx-auto">
+        <h2>Add Item</h2>
+        <form action="add_todo" method="post" class="row col-auto">
+            {% csrf_token %}
+            <div class="col-10">
+                <input type="text" name="content" class="form-control mb-2" placeholder="Type here....">
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-10 mx-auto">
+        <ul class="list-group">
+            {% for todo_item in todo_items %}
+                <li class="list-group-item">{{todo_item.text}}
+<!--                    <form action="delete_todo/{{todo_item.id}}" method="post">-->
+                    <div class="float-end">
+                        <form action="{% url 'delete_todo' todo_item.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger ">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
+{% endblock %}
