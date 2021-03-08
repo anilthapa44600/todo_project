@@ -1,37 +1,52 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row mt-4">
-    <div class="col-10 mx-auto">
-        <h2>Add Item</h2>
-        <form action="add_todo" method="post" class="row col-auto">
-            {% csrf_token %}
-            <div class="col-10">
-                <input type="text" name="content" class="form-control mb-2" placeholder="Type here....">
-            </div>
-            <div class="col-2">
-                <button type="submit" class="btn btn-primary mb-2">Submit</button>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="row mt-4">
-    <div class="col-10 mx-auto">
-        <ul class="list-group">
-            {% for todo_item in todo_items %}
-                <li class="list-group-item">{{todo_item.text}}
-<!--                    <form action="delete_todo/{{todo_item.id}}" method="post">-->
-                    <div class="float-end">
-                        <form action="{% url 'delete_todo' todo_item.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-danger ">Delete</button>
-                        </form>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
 
+    <div class="row mt-4">
+        <div class="col-10 mx-auto">
+            <ul class="list-group">
+                {% for todo_item in todo_items %}
+                    <li class="list-group-item">{{todo_item.text}}
+
+                        <div class="float-end">
+<!--                        <form action="delete_todo/{{todo_item.id}}" method="post">-->
+                            <form action="{% url 'delete_todo' todo_item.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger ">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-lg circle-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fas fa-plus"></i></button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="add_todo" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" name="content" class="form-control" placeholder="Type here....">
+                        </div>
+                        <div class="float-end">
+                            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                        </div>
+                    </form>
+                </div>
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                    <button type="button" class="btn btn-primary">Send message</button>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
