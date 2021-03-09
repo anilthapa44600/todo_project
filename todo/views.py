@@ -5,8 +5,17 @@ from .models import ToDo
 
 
 def index(request):
-    todo_items = ToDo.objects.all().order_by('-added_date')
-    return render(request,'index.html', {'todo_items':todo_items})
+    keys_list = request.GET.keys()
+    print(keys_list)
+    if 'status' in keys_list:
+        status = request.GET['status']
+        todo_items = ToDo.objects.filter(status=status).order_by('-added_date')
+    elif 'priority' in keys_list:
+        priority = request.GET['priority']
+        todo_items = ToDo.objects.filter(priority=priority).order_by('-added_date')
+    else:
+        todo_items = ToDo.objects.all().order_by('-added_date')
+    return render(request,'index.html', {'todo_items': todo_items})
 
 
 def add_todo(request):
