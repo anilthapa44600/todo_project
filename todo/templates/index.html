@@ -88,7 +88,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="add_todo" method="post">
+                    <form method="post">
                         {% csrf_token %}
                         <div class="mb-3">
                             <input type="text" id="content"  name="content" class="form-control" placeholder="Type here....">
@@ -120,40 +120,37 @@
 
     <script>
 
-        var exampleModal = document.getElementById('updateTodoModal')
+        let exampleModal = document.getElementById('updateTodoModal')
         exampleModal.addEventListener('show.bs.modal', function (event) {
-          // Button that triggered the modal
-          var button = event.relatedTarget
-          // Extract info from data-bs-* attributes
-          var item_id = button.getAttribute('data-bs-whatever')
-          //console.log("todo item id: " + item_id);
-          // If necessary, you could initiate an AJAX request here
-          // and then do the updating in a callback.
-          //
-        $.ajax({
-            method: 'GET',
-            dataType: 'json',
-            url: 'update_todo/'+item_id,
-            success: function(data){
-                console.log(data);
-                // Update the modal's content.
-                let modalBodyInput = exampleModal.querySelector('#content');
-                modalBodyInput.value = data['text'];
-                let modalBodySelect = exampleModal.querySelector('#priority');
-                let selectTagChildren = modalBodySelect.children;
-                for (let child of selectTagChildren){
-                    if (child.value === data['priority']){
-                        child.setAttribute('selected','selected');
+            // Button that triggered the modal
+            let button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            let item_id = button.getAttribute('data-bs-whatever')
+            //set the action attribute of update form
+            exampleModal.querySelector('form').action='add_item/'+item_id);
+
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: 'update_todo/'+item_id,
+                success: function(data){
+                    console.log(data);
+                    // Update the modal's content.
+                    let modalBodyInput = exampleModal.querySelector('#content');
+                    modalBodyInput.value = data['text'];
+                    let modalBodySelect = exampleModal.querySelector('#priority');
+                    let selectTagChildren = modalBodySelect.children;
+                    for (let child of selectTagChildren){
+                        if (child.value === data['priority']){
+                            child.setAttribute('selected','selected');
+                        }
                     }
-                }
-                if(data['status'] === "1"){
-                    document.getElementById('flexSwitchCheckDefault').checked = true;
-                }
-                //console.log('inside updatetodomodel listener');
-            },
-        });
-
-
+                    if(data['status'] === "1"){
+                        document.getElementById('flexSwitchCheckDefault').checked = true;
+                    }
+                    //console.log('inside updatetodomodel listener');
+                },
+            });
         })
     </script>
 
