@@ -1,3 +1,4 @@
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import ToDo
@@ -19,11 +20,27 @@ def index(request):
 
 
 def add_todo(request):
-    current_time = timezone.now()
-    content = request.POST['content']
-    ToDo.objects.create(text=content, added_date=current_time)
-    print("number of rows in db: ", ToDo.objects.all().count())
-    return redirect('/')
+    if request.method == 'POST':
+        current_time = timezone.now()
+        content = request.POST['content']
+        ToDo.objects.create(text=content, added_date=current_time)
+        print("number of rows in db: ", ToDo.objects.all().count())
+        return redirect('/')
+    return HttpResponse('<h1>Unable to process the request</h1>')
+
+
+def update_todo(request, todo_id):
+    if request.method == 'GET':
+        todo_item = ToDo.objects.all().get(id=todo_id)
+        print("todo_item:" ,todo_item.status)
+        return JsonResponse({'id': todo_item.id, 'text': todo_item.text, 'priority': todo_item.priority,
+                             'status': todo_item.status})
+    elif request.method == 'POST':
+        current_time = timezone.now()
+        content = request.POST['content']
+        ToDo.objects.create(text=content, added_date=current_time)
+        print("number of rows in db: ", ToDo.objects.all().count())
+        return redirect('/')
 
 
 def delete_todo(request, todo_id):

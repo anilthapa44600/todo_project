@@ -31,7 +31,7 @@
 
                         <div class="float-end">
 <!--                        <form action="delete_todo/{{todo_item.id}}" method="post">-->
-                            <button type="submit" class="btn btn-sm btn-warning " data-bs-toggle="modal" data-bs-target="#updateTodoModal" data-bs-whatever="updateTodo"><i class="far fa-edit"></i></button>
+                            <button type="submit" class="btn btn-sm btn-warning " data-bs-toggle="modal" data-bs-target="#updateTodoModal" data-bs-whatever="{{todo_item.id}}"><i class="far fa-edit"></i></button>
                             <form action="{% url 'delete_todo' todo_item.id %}" method="post" style="display:inline-block;">
                                 {% csrf_token %}
 
@@ -102,7 +102,7 @@
                             </select>
                         </div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
                             <label class="form-check-label" for="flexSwitchCheckDefault">Complete</label>
                         </div>
                         <div class="float-end">
@@ -125,16 +125,34 @@
           // Button that triggered the modal
           var button = event.relatedTarget
           // Extract info from data-bs-* attributes
-          //var recipient = button.getAttribute('data-bs-whatever')
+          var item_id = button.getAttribute('data-bs-whatever')
+          //console.log("todo item id: " + item_id);
           // If necessary, you could initiate an AJAX request here
           // and then do the updating in a callback.
           //
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: 'update_todo/'+item_id,
+            success: function(data){
+                console.log(data);
+                // Update the modal's content.
+                let modalBodyInput = exampleModal.querySelector('#content');
+                modalBodyInput.value = data['text'];
+                let modalBodySelect = exampleModal.querySelector('#priority');
+                let selectTagChildren = modalBodySelect.children;
+                for (let child of selectTagChildren){
+                    if (child.value === data['priority']){
+                        child.setAttribute('selected','selected');
+                    }
+                }
+                if(data['status'] === "1"){
+                    document.getElementById('flexSwitchCheckDefault').checked = true;
+                }
+                //console.log('inside updatetodomodel listener');
+            },
+        });
 
-              // Update the modal's content.
-              var modalBodyInput = exampleModal.querySelector('#content')
-              modalBodyInput.value = "Update Todo"
-              console.log(modalBodyInput)
-              console.log('inside updatetodomodel listener')
 
         })
     </script>
