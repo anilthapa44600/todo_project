@@ -31,7 +31,9 @@
 
                         <div class="float-end">
 <!--                        <form action="delete_todo/{{todo_item.id}}" method="post">-->
+                            {% if todo_item.status == '0' %}
                             <button type="submit" class="btn btn-sm btn-warning " data-bs-toggle="modal" data-bs-target="#updateTodoModal" data-bs-whatever="{{todo_item.id}}"><i class="far fa-edit"></i></button>
+                            {% endif %}
                             <form action="{% url 'delete_todo' todo_item.id %}" method="post" style="display:inline-block;">
                                 {% csrf_token %}
 
