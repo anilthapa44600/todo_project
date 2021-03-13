@@ -7,7 +7,7 @@ from .models import ToDo
 
 def index(request):
     keys_list = request.GET.keys()
-    print(keys_list)
+    # print(keys_list)
     if 'status' in keys_list:
         status = request.GET['status']
         todo_items = ToDo.objects.filter(status=status).order_by('-added_date')
@@ -32,14 +32,19 @@ def add_todo(request):
 def update_todo(request, todo_id):
     if request.method == 'GET':
         todo_item = ToDo.objects.all().get(id=todo_id)
-        print("todo_item:" ,todo_item.status)
+        print("todo_item:", todo_item.status)
         return JsonResponse({'id': todo_item.id, 'text': todo_item.text, 'priority': todo_item.priority,
                              'status': todo_item.status})
     elif request.method == 'POST':
-        current_time = timezone.now()
-        content = request.POST['content']
-        ToDo.objects.create(text=content, added_date=current_time)
-        print("number of rows in db: ", ToDo.objects.all().count())
+        print("DATA FOR UPDATE:")
+        print(request.POST)
+        keys_list = request.POST.keys()
+        if 'status' in keys_list:
+            status = 1
+        else:
+            status = 0
+        ToDo.objects.filter(id=todo_id).update(text=request.POST['content'], priority=request.POST['priority'],
+                                               status=status)
         return redirect('/')
 
 
