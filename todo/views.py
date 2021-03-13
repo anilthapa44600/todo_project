@@ -34,7 +34,7 @@ def update_todo(request, todo_id):
         todo_item = ToDo.objects.all().get(id=todo_id)
         print("todo_item:", todo_item.status)
         return JsonResponse({'id': todo_item.id, 'text': todo_item.text, 'priority': todo_item.priority,
-                             'status': todo_item.status})
+                             'status': todo_item.status, 'added-date': todo_item.added_date})
     elif request.method == 'POST':
         print("DATA FOR UPDATE:")
         print(request.POST)

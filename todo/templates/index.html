@@ -32,7 +32,9 @@
                         <div class="float-end">
 <!--                        <form action="delete_todo/{{todo_item.id}}" method="post">-->
                             {% if todo_item.status == '0' %}
-                            <button type="submit" class="btn btn-sm btn-warning " data-bs-toggle="modal" data-bs-target="#updateTodoModal" data-bs-whatever="{{todo_item.id}}"><i class="far fa-edit"></i></button>
+                                <button type="submit" class="btn btn-sm btn-warning " data-bs-toggle="modal" data-bs-target="#updateTodoModal" data-bs-whatever="{{todo_item.id}}"><i class="far fa-edit"></i></button>
+                            {% else %}
+                                <button type="submit" class="btn btn-sm btn-success " data-bs-toggle="modal" data-bs-target="#viewTodoModal" data-bs-whatever="{{todo_item.id}}"><i class="fas fa-eye"></i></button>
                             {% endif %}
                             <form action="{% url 'delete_todo' todo_item.id %}" method="post" style="display:inline-block;">
                                 {% csrf_token %}
@@ -73,6 +75,40 @@
                             <button type="submit" class="btn btn-primary mb-2">Submit</button>
                         </div>
                     </form>
+                </div>
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                    <button type="button" class="btn btn-primary">Send message</button>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="viewTodoModal" tabindex="-1" aria-labelledby="viewTodoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewTodoModalLabel">Item Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <p id="item-content">Title:</p>
+                    </div>
+                    <div class="mb-3">
+                            <p id="item-priority">Priority:</p>
+                        </div>
+                    <div class="mb-3">
+                            <p id="item-status">Status:</p>
+                        </div>
+                    <div class="mb-3">
+                            <p id="item-added-date">Added date:</p>
+                        </div>
+
+                    <div class="float-end">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+
                 </div>
 <!--                <div class="modal-footer">-->
 <!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
@@ -153,6 +189,28 @@
                         document.getElementById('flexSwitchCheckDefault').checked = true;
                     }
                     //console.log('inside updatetodomodel listener');
+                },
+            });
+        });
+        let todoViewModal = document.getElementById('viewTodoModal');
+        todoViewModal.addEventListener('show.bs.modal', function (event) {
+            // Button that triggered the modal
+            let button = event.relatedTarget
+
+            // Extract info from data-bs-* attributes
+            let item_id = button.getAttribute('data-bs-whatever')
+
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: 'update_todo/'+item_id,
+                success: function(data){
+                    console.log(data);
+                    // Update the modal's content.
+                    viewTodoModal.querySelector('#item-content').innerText = 'Title: ' + data['text'];
+                    viewTodoModal.querySelector('#item-priority').innerText = 'Priority: ' + data['priority'];
+                    viewTodoModal.querySelector('#item-added-date').innerText = 'Added Date: ' + data['added-date'];
+                    viewTodoModal.querySelector('#item-status').innerText = 'Status: ' + 'completed';
                 },
             });
         });
