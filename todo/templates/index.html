@@ -168,13 +168,11 @@
 
             //set the action attribute of update form
             exampleModal.querySelector('form').action='update_todo/'+item_id;
-
-            $.ajax({
-                method: 'GET',
-                dataType: 'json',
-                url: 'update_todo/'+item_id,
-                success: function(data){
-                    console.log(data);
+            let url = 'update_todo/'+item_id;
+            fetch(url)
+            .then(res => res.json())
+            .then(data =>{
+                console.log(data);
                     // Update the modal's content.
                     let modalBodyInput = exampleModal.querySelector('#content');
                     modalBodyInput.value = data['text'];
@@ -189,8 +187,31 @@
                         document.getElementById('flexSwitchCheckDefault').checked = true;
                     }
                     //console.log('inside updatetodomodel listener');
-                },
-            });
+            })
+            .catch(err => console.log(err))
+
+<!--            $.ajax({-->
+<!--                method: 'GET',-->
+<!--                dataType: 'json',-->
+<!--                url: 'update_todo/'+item_id,-->
+<!--                success: function(data){-->
+<!--                    console.log(data);-->
+<!--                    // Update the modal's content.-->
+<!--                    let modalBodyInput = exampleModal.querySelector('#content');-->
+<!--                    modalBodyInput.value = data['text'];-->
+<!--                    let modalBodySelect = exampleModal.querySelector('#priority');-->
+<!--                    let selectTagChildren = modalBodySelect.children;-->
+<!--                    for (let child of selectTagChildren){-->
+<!--                        if (child.value === data['priority']){-->
+<!--                            child.setAttribute('selected','selected');-->
+<!--                        }-->
+<!--                    }-->
+<!--                    if(data['status'] === "1"){-->
+<!--                        document.getElementById('flexSwitchCheckDefault').checked = true;-->
+<!--                    }-->
+<!--                    //console.log('inside updatetodomodel listener');-->
+<!--                },-->
+<!--            });-->
         });
         let todoViewModal = document.getElementById('viewTodoModal');
         todoViewModal.addEventListener('show.bs.modal', function (event) {
@@ -200,19 +221,31 @@
             // Extract info from data-bs-* attributes
             let item_id = button.getAttribute('data-bs-whatever')
 
-            $.ajax({
-                method: 'GET',
-                dataType: 'json',
-                url: 'update_todo/'+item_id,
-                success: function(data){
-                    console.log(data);
-                    // Update the modal's content.
-                    viewTodoModal.querySelector('#item-content').innerText = 'Title: ' + data['text'];
-                    viewTodoModal.querySelector('#item-priority').innerText = 'Priority: ' + data['priority'];
-                    viewTodoModal.querySelector('#item-added-date').innerText = 'Added Date: ' + data['added-date'];
-                    viewTodoModal.querySelector('#item-status').innerText = 'Status: ' + 'completed';
-                },
-            });
+            let url= 'update_todo/'+item_id
+            fetch(url)
+            .then(res => res.json())
+            .then(data =>{
+                console.log(data);
+                // Update the modal's content.
+                viewTodoModal.querySelector('#item-content').innerText = 'Title: ' + data['text'];
+                viewTodoModal.querySelector('#item-priority').innerText = 'Priority: ' + data['priority'];
+                viewTodoModal.querySelector('#item-added-date').innerText = 'Added Date: ' + data['added-date'];
+                viewTodoModal.querySelector('#item-status').innerText = 'Status: ' + 'completed';
+            })
+            .catch(err => console.log(err))
+<!--            $.ajax({-->
+<!--                method: 'GET',-->
+<!--                dataType: 'json',-->
+<!--                url: 'update_todo/'+item_id,-->
+<!--                success: function(data){-->
+<!--                    console.log(data);-->
+<!--                    // Update the modal's content.-->
+<!--                    viewTodoModal.querySelector('#item-content').innerText = 'Title: ' + data['text'];-->
+<!--                    viewTodoModal.querySelector('#item-priority').innerText = 'Priority: ' + data['priority'];-->
+<!--                    viewTodoModal.querySelector('#item-added-date').innerText = 'Added Date: ' + data['added-date'];-->
+<!--                    viewTodoModal.querySelector('#item-status').innerText = 'Status: ' + 'completed';-->
+<!--                },-->
+<!--            });-->
         });
     </script>
 

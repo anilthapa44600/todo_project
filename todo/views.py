@@ -39,7 +39,11 @@ def update_todo(request, todo_id):
         print("DATA FOR UPDATE:")
         print(request.POST)
         keys_list = request.POST.keys()
-        if 'status' in keys_list:
+        # if 'status' in keys_list:
+        #     status = 1
+        # else:
+        #     status = 0
+        if request.POST.get('status', None):
             status = 1
         else:
             status = 0
