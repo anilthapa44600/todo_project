@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+    <div class="row ">
+    <div class="col-5 mx-auto">
+        <h1>REGISTRATION FORM</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                {{ form.username }}
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2"><i class="fas fa-envelope"></i></span>
+                {{ form.email }}
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3"><i class="fas fa-key"></i></span>
+                {{ form.password1 }}
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon4"><i class="fas fa-key"></i></span>
+                {{ form.password2 }}
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary btn-lg mx-auto  ">Register</button>
+            </div>
+        </form>
+        {{form.errors}}
+        <p>Already have an account. <a href="{% url 'login' %}">LOGIN HERE</a></p>
+    </div>
+    </div>
+    <script>
+        let form_fields = document.getElementsByTagName("input")
+        for(form_field of form_fields){
+            form_field.setAttribute('class', "form-control");
+        }
+        form_fields[1].placeholder = "Username"
+        form_fields[2].placeholder = "Email"
+        form_fields[3].placeholder = "Password1"
+        form_fields[4].placeholder = "Password2"
+    </script>
+    {% endblock %}
