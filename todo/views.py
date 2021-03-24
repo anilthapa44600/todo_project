@@ -12,12 +12,12 @@ def index(request):
         # print(keys_list)
         if 'status' in keys_list:
             status = request.GET['status']
-            todo_items = ToDo.objects.filter(status=status).order_by('-added_date')
+            todo_items = ToDo.objects.filter(user=request.user ,status=status).order_by('-added_date')
         elif 'priority' in keys_list:
             priority = request.GET['priority']
-            todo_items = ToDo.objects.filter(priority=priority).order_by('-added_date')
+            todo_items = ToDo.objects.filter(user=request.user, priority=priority).order_by('-added_date')
         else:
-            todo_items = ToDo.objects.all().order_by('-added_date')
+            todo_items = ToDo.objects.filter(user=request.user).order_by('-added_date')
         return render(request,'index.html', {'todo_items': todo_items})
 
 
@@ -25,8 +25,11 @@ def index(request):
 def add_todo(request):
     if request.method == 'POST':
         current_time = timezone.now()
-        content = request.POST['content']
-        ToDo.objects.create(text=content, added_date=current_time)
+        print(request.POST)
+        ToDo.objects.create(text=request.POST.get('content'),
+                            added_date=current_time,
+                            priority=request.POST.get('priority', 'normal'),
+                            user=request.user)
         print("number of rows in db: ", ToDo.objects.all().count())
         return redirect('/')
     return HttpResponse('<h1>Unable to process the request</h1>')
