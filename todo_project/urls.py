@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('todo.urls')),
     path('login', users_views.login_view, name='login'),
+    path('logout', users_views.logout_view, name='logout'),
     path('register', users_views.register_view, name='register'),
 ]
