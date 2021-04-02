@@ -3,24 +3,41 @@
 {% block content %}
 
     <div class="row mt-4">
-        <div class="col-2">
-            <a href="/">All</a>
-        </div>
-        <div class="col-2">
-            <a href="?status=1">Completed</a>
-        </div>
-        <div class="col-2">
-            <a href="?status=0">Pending</a>
-        </div>
-        <div class="col-2">
-            <a href="?priority=high">High Priority</a>
-        </div>
-        <div class="col-2">
-            <a href="?priority=normal">Normal Priority</a>
-        </div>
-        <div class="col-2">
-            <a href="?priority=low">Low Priority</a>
-        </div>
+        <form action="{% url 'index' %}"class="row row-cols-lg-auto g-3 align-items-center">
+
+
+            <div class="col-10 mx-auto">
+                <select  name="priority" class="form-select">
+                    <option value="" selected>Select a priority</option>
+                    <option value="high">High</option>
+                    <option value="normal">Normal</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+            <div class="col-10 mx-auto">
+                <select  name="status" class="form-select">
+                    <option value="" selected>Select status</option>
+                    <option value="0">Pending</option>
+                    <option value="1">completed</option>
+
+                </select>
+            </div>
+
+            <div class="col-10 mx-auto">
+                <input type="date" class="form-control" name="start_date" class="form-control">
+            </div>
+            <div class="col-10 mx-auto">
+                <input type="date" name="end_date" class="form-control">
+            </div>
+
+            <div class="col-10 mx-auto">
+                <input type="text" name="keyword" class="form-control" placeholder="Type keyword/s....">
+            </div>
+
+            <div class="col-10 mx-auto">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
     </div>
 
     <div class="row mt-4">

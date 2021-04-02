@@ -8,17 +8,15 @@ from .models import ToDo
 
 @login_required(login_url='login')
 def index(request):
-        keys_list = request.GET.keys()
-        # print(keys_list)
-        if 'status' in keys_list:
-            status = request.GET['status']
-            todo_items = ToDo.objects.filter(user=request.user ,status=status).order_by('-added_date')
-        elif 'priority' in keys_list:
-            priority = request.GET['priority']
-            todo_items = ToDo.objects.filter(user=request.user, priority=priority).order_by('-added_date')
-        else:
-            todo_items = ToDo.objects.filter(user=request.user).order_by('-added_date')
-        return render(request,'index.html', {'todo_items': todo_items})
+    kwargs ={'user': request.user}
+    if request.GET.get('status', None):
+        kwargs['status'] = request.GET.get('status')
+    if request.GET.get('priority', None):
+        kwargs['priority'] = request.GET.get('priority')
+    if request.GET.get('keyword', None):
+        kwargs['text__icontains'] = request.GET.get('keyword')
+    todo_items = ToDo.objects.filter(**kwargs).order_by('-added_date')
+    return render(request,'index.html', {'todo_items': todo_items})
 
 
 @login_required(login_url='login')
