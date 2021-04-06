@@ -15,14 +15,24 @@
   </head>
   <body>
       {% if request.user.is_authenticated %}
-      <nav class="navbar navbar-dark bg-dark">
-        <!-- Navbar content -->
+        <nav class="navbar navbar-dark bg-dark container-fluid">
+          <!-- Navbar content -->
 
-        <a class="navbar-brand" href="#">ToDo App</a>
+          <span class="navbar-brand" >ToDo App</span>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{user.profile.image.url}}" style="width:30px; height:30px;" class="rounded-circle" alt="...">
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+              <li><a class="dropdown-item active">Hello, {{ request.user }}</a></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Separated link</a></li>
+            </ul>
+          </div>
+        </nav>
 
-        <span style="color:white">Hello, {{ request.user }}</span>
-        <a class="navbar-brand" href="{% url 'logout' %}">Logout</a>
-      </nav>
       {% endif %}
 
     <div class="container h-100">

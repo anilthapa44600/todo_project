@@ -2,7 +2,7 @@
     height: 70px;
     width: 70px;
     border-radius: 50%;
-    position: absolute;
+    position: fixed;
     bottom : 50px;
     right: 50px;
 }
