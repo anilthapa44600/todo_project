@@ -18,13 +18,14 @@
         <nav class="navbar navbar-dark bg-dark container-fluid">
           <!-- Navbar content -->
 
-          <span class="navbar-brand" >ToDo App</span>
+          <a class="navbar-brand" href="{% url 'index' %}" >ToDo App</a>
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="{{user.profile.image.url}}" style="width:30px; height:30px;" class="rounded-circle" alt="...">
+              <img src="{{user.profile.image.url}}" style="width:30px; height:30px;" class="rounded-circle" alt="profile picture">
             </button>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
               <li><a class="dropdown-item active">Hello, {{ request.user }}</a></li>
+              <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
               <li><a class="dropdown-item" href="#">Something else here</a></li>
               <li><hr class="dropdown-divider"></li>
